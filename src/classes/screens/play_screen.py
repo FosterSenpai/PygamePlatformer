@@ -14,7 +14,7 @@ class PlayScreen:
         self._screen.fill(self._bg_colour)
         pygame.display.set_caption(f"Platformer: {self._current_level.name}")
         
-    def udpate(self) -> None:
+    def update(self) -> None:
         pass
     
     def handle_event(self, event):
