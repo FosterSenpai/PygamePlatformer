@@ -4,7 +4,8 @@
 import pygame
 
 class Button:
-    def __init__(self, name, pos, width, height, base_colour, hover_colour, font, text, text_colour, border_radius=0) -> None:
+    def __init__(self, name: str, pos: tuple, width: int, height: int, base_colour, hover_colour,
+                 font: pygame.Font, text: str, text_colour, border_radius= 0) -> None:
         self.name = name  # Way to id button when handling events
         
         # Colours
@@ -24,7 +25,7 @@ class Button:
         self._height = height
         self._border_radius = border_radius
         self._rect = pygame.Rect(self._pos[0], self._pos[1], self._width, self._height)
-        self._text_rect = self._text_surface.get_rect(self._rect.center) # Center inside button rect
+        self._text_rect = self._text_surface.get_rect(center= self._rect.center) # Center inside button rect
         
     def check_hover(self, mouse_pos) -> bool:
         mouse_x, mouse_y = mouse_pos
@@ -46,7 +47,7 @@ class Button:
     
     def draw(self, screen) -> None:
         # Draw button rectangle
-        pygame.draw.rect(screen, self._current_colour, self._rect, self._border_radius)
+        pygame.draw.rect(screen, self._current_colour, self._rect, border_radius= self._border_radius)
         # Draw button text
         screen.blit(self._text_surface,self._text_rect)
         
