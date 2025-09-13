@@ -5,7 +5,8 @@ import config
 
 class ScreenManager:
     def __init__(self, game_manager) -> None:
-        # Screen Setup
+        # Screen 
+        pygame.init()
         self.screen = pygame.display.set_mode((config.WINDOW_WIDTH,config.WINDOW_HEIGHT))
         self._current_screen = MainMenuScreen(self.screen)
         
@@ -18,6 +19,10 @@ class ScreenManager:
         self._game_manager.update()
 
     def handle_event(self, event) -> None:
+        """Handle general events and screen specific events for things like screen changing.
+        Args:
+            event (pygame.event): The pygame event to handle.
+        """
         # Window quit button
         if event.type == pygame.QUIT:
             self.running = False
@@ -25,10 +30,14 @@ class ScreenManager:
         # - Screen Specific Event Handling -
         # Main menu event handling
         if isinstance(self._current_screen, MainMenuScreen):
-            pass
+            result = self._current_screen.handle_event(event)
+            if result == "Start": # Start Game Button
+                pass # TODO: Link game screen
+                
     
     def draw(self) -> None:
         self._current_screen.draw()
+        pygame.display.update()
 
     
     def run(self) -> None:
@@ -41,3 +50,4 @@ class ScreenManager:
                 self.handle_event(event)
             # Draw Screen
             self.draw()
+        pygame.quit()
