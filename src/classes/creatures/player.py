@@ -47,3 +47,26 @@ class Player:
         # Store data in json file
         with open(save_path, "w") as f:
             json.dump(data, f)
+            
+    def handle_event(self, event: pygame.event.Event):
+        # Movement input
+        if event.type == pygame.KEYDOWN:
+            # UI input
+            if event.key == pygame.K_ESCAPE:
+                return 'Pause'
+            # Movement input
+            elif event.key == pygame.K_w:
+                pass # Not gonna be same as jump, maybe fall slower?
+            elif event.key == pygame.K_a:
+                pass # Move left
+            elif event.key == pygame.K_s:
+                pass # Move down
+            elif event.key == pygame.K_d:
+                pass # Move right
+            elif event.key == pygame.K_SPACE:
+                pass # Jump
+            elif event.key == pygame.K_LSHIFT:
+                pass # Dash
+            return 'Moving'
+        
+        return None
