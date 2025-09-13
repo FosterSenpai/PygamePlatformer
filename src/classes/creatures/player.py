@@ -1,12 +1,11 @@
 import pygame
 import json
 import os
+import time
 
 class Player:
-    def __init__(self, name="", save_file_path=None) -> None:
+    def __init__(self, save_file_path=None) -> None:
         # Load default starting character stats
-        self.name = name
-        self._save_count = 0
         self.score = 0
         self.hp = 100
         self.speed = 10
@@ -20,8 +19,6 @@ class Player:
             data = json.load(f)
         
         # Update member variables from json
-        self.name = data['name']
-        self._save_count = data['save_count']
         self.score = data['score']
         self.hp = data['hp']
         self.speed = data['speed']
@@ -33,16 +30,15 @@ class Player:
         os.makedirs(save_dir, exist_ok=True)
         
         # Store player data in dict and convert to json
-        self._save_count += 1
         data = {
-            "name": self.name,
-            "save_count": self._save_count,
             "score": self.score,
             "hp": self.hp,
             "speed": self.speed
         }
-        # Build save path from name and save no.
-        save_path = os.path.join(save_dir, f"{data['name']}SAVE{data['save_count']}")
+        # Build save path from timestamp
+        time_stamp = time.strftime("%Y%m%d-%H%M%S")
+        file_name = f"save_{time_stamp}.json"
+        save_path = os.path.join(save_dir, file_name)
         
         # Store data in json file
         with open(save_path, "w") as f:
