@@ -1,5 +1,6 @@
 import pygame
 from .screens.main_menu_screen import MainMenuScreen
+from .screens.play_screen import PlayScreen
 import config
 
 class ScreenManager:
@@ -23,7 +24,7 @@ class ScreenManager:
         if isinstance(self._current_screen, MainMenuScreen):
             result = self._current_screen.handle_event(event)
             if result == "Start": # Start Game Button
-                print(result) # TODO: Link game screen
+                self._current_screen = PlayScreen(self.screen, self._game_manager.player)
                 
     
     def draw(self) -> None:
