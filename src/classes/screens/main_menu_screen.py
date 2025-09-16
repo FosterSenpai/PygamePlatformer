@@ -25,11 +25,9 @@ class MainMenuScreen:
         ]
         
     def draw(self) -> None:
-        # Update screen state
-        self.update()
-        # Setup screen
+        # Prepare screen
         self._screen.fill(self._bg_colour)
-        pygame.display.set_caption("Main Menu")
+        pygame.display.set_caption("Platformer: Main Menu")
         
         # Draw buttons
         for button in self._buttons:
