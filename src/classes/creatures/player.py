@@ -88,12 +88,13 @@ class Player:
                 self.change_action("JUMP START")
             elif event.key == pygame.K_LSHIFT:
                 self.change_action("DASH")
-            return 'Moving'
-        
-        return None
+                
+            # Attacks
+            elif event.key == pygame.K_v:
+                self.change_action("ATTACK 1")
     
     def load_sprites(self):
-        actions = ["AIR ATTACK", "ATTACk 1", "ATTACk 2", "ATTACk 3", "CLIMBING", "DASH", "DEATH",
+        actions = ["AIR ATTACK", "ATTACK 1", "ATTACK 2", "ATTACK 3", "CLIMBING", "DASH", "DEATH",
                    "DEFEND", "HEALING NO EFFECT", "HEALING", "HURT", "IDLE", "JUMP FALL", "JUMP START",
                    "JUMP TRANSITION", "JUMP", "RUN", "SPECIAL ATTACK", "THROW", "WALK", "WALL CONTACT",
                    "WALL JUMP", "WALL SLIDE"]
