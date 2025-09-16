@@ -22,7 +22,13 @@ class Player:
         self._current_spritesheet = self._sprites[self._current_action]
         self._frame_index = 0
         self._is_facing_left = False
+        self._frame_height = 96
+        self._frame_width = 96
         self._current_frame = self.get_current_frame()
+
+        # Animation timing
+        self._animation_timer = 0
+        self._base_animation_speed = 0.05 # Time between frame changes (seconds)
         
         # Update default stats with those from save file
         if save_file_path is not None:
@@ -94,16 +100,15 @@ class Player:
             sprites[action] = pygame.image.load(path).convert_alpha()
         return sprites
     
-    def update(self):
+    def update(self, delta_time=1/60):
         # Update current sprite sheet for action.
         self._current_spritesheet = self._sprites[self._current_action]
+        self.update_animation(delta_time)
         self._current_frame = self.get_current_frame()
     
     def get_current_frame(self):
         # Rectangle for cutting out frame
-        frame_height = 96
-        frame_width = 96
-        frame_rect = pygame.Rect(self._frame_index * frame_width, 0, frame_width, frame_height)
+        frame_rect = pygame.Rect(self._frame_index * self._frame_width, 0, self._frame_width, self._frame_height)
         frame = self._current_spritesheet.subsurface(frame_rect)
         
         # Flip frame if facing left
@@ -115,3 +120,20 @@ class Player:
     
     def draw(self, surface):
         surface.blit(self._current_frame, (self.x, self.y))
+        
+    def update_animation(self, delta_time):
+        # Calculate number of frames in sheet
+        sheet_width = self._current_spritesheet.get_width()
+        num_frames = sheet_width // self._frame_width
+
+        # Animation speed  tied to player speed
+        # Higher player speed, lower time between frames
+        animation_speed = self._base_animation_speed / max(1, self.speed / 10)
+        self._animation_timer += delta_time # Increment timer
+        # If timer hits animation speed increment frame and reset timer
+        if self._animation_timer >= animation_speed:
+            self._animation_timer = 0
+            self._frame_index += 1
+            # Reset after last frame
+            if self._frame_index >= num_frames:
+                self._frame_index = 0
