@@ -1,5 +1,5 @@
 import pygame
-from .creatures.player import Player
+from ..creatures.player import Player
 
 class GameManager:
     def __init__(self) -> None:

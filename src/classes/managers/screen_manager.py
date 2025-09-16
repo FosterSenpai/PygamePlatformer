@@ -1,6 +1,6 @@
 import pygame
-from .screens.main_menu_screen import MainMenuScreen
-from .screens.play_screen import PlayScreen
+from ..screens.main_menu_screen import MainMenuScreen
+from ..screens.play_screen import PlayScreen
 import config
 
 class ScreenManager:

@@ -1,6 +1,6 @@
 import pygame
-from .game_manager import GameManager
-from .screen_manager import ScreenManager
+from .managers.game_manager import GameManager
+from .managers.screen_manager import ScreenManager
 
 class Game:
     def __init__(self) -> None:
