@@ -12,8 +12,8 @@ class Player:
         self.speed = 10
         
         # Position
-        self.x = config.WINDOW_WIDTH //2
-        self.y = config.WINDOW_HEIGHT //2
+        self.x = config.WINDOW_WIDTH //2 - 48
+        self.y = config.WINDOW_HEIGHT //2 - 48
         
         # Sprite setup
         self._spritesheet_path = os.path.join(config.SPRITE_PATH,"player")
@@ -75,15 +75,19 @@ class Player:
             elif event.key == pygame.K_w:
                 pass # Not gonna be same as jump, maybe fall slower?
             elif event.key == pygame.K_a:
-                pass # Move left
+                if not self._is_facing_left:
+                    self._is_facing_left = True
+                self.change_action("WALK")
             elif event.key == pygame.K_s:
-                pass # Move down
+                self.change_action("JUMP FALL")
             elif event.key == pygame.K_d:
-                pass # Move right
+                if self._is_facing_left:
+                    self._is_facing_left = False
+                self.change_action("WALK")
             elif event.key == pygame.K_SPACE:
-                pass # Jump
+                self.change_action("JUMP START")
             elif event.key == pygame.K_LSHIFT:
-                pass # Dash
+                self.change_action("DASH")
             return 'Moving'
         
         return None
@@ -137,3 +141,7 @@ class Player:
             # Reset after last frame
             if self._frame_index >= num_frames:
                 self._frame_index = 0
+                
+    def change_action(self, action: str) -> None:
+        self._frame_index = 0
+        self._current_action = action
