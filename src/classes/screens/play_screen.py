@@ -54,7 +54,7 @@ class PlayScreen:
         
     def update(self) -> None:
         if not self.paused:
-            pass # Only update game logic if not paused
+            self._player.update()
     
     def handle_event(self, event):
         if not self.paused: # Play screen events (Player, UI)

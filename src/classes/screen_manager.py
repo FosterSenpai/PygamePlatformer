@@ -13,7 +13,7 @@ class ScreenManager:
         self._game_manager = game_manager
 
     def update(self, delta_time) ->None:
-        pass
+        self._current_screen.update()
 
     def handle_event(self, event) -> None:
         """Handle screen specific events for things like screen changing.
