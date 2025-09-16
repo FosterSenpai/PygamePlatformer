@@ -45,6 +45,7 @@ class PlayScreen:
         # Prepare Screen
         self._screen.fill(self._bg_colour)
         pygame.display.set_caption(f"Platformer: {self._current_level.name}")
+        self._player.draw(self._screen)
         
         if self.paused:
             # Draw pause overlay
