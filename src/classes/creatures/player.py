@@ -18,8 +18,8 @@ class Player:
         # Sprite setup
         self._spritesheet_path = os.path.join(config.SPRITE_PATH,"player")
         self._sprites = self.load_sprites()
-        self._current_action = "IDLE"
-        self._current_spritesheet = self._sprites[self._current_action]
+        self._current_state = "IDLE"
+        self._current_spritesheet = self._sprites[self._current_state]
         self._frame_index = 0
         self._is_facing_left = False
         self._frame_height = 96
@@ -77,22 +77,31 @@ class Player:
             elif event.key == pygame.K_a:
                 if not self._is_facing_left:
                     self._is_facing_left = True
-                self.change_action("WALK")
+                self.set_state("WALK")
             elif event.key == pygame.K_s:
-                self.change_action("JUMP FALL")
+                self.set_state("JUMP FALL")
             elif event.key == pygame.K_d:
                 if self._is_facing_left:
                     self._is_facing_left = False
-                self.change_action("WALK")
+                self.set_state("WALK")
             elif event.key == pygame.K_SPACE:
-                self.change_action("JUMP START")
+                self.set_state("JUMP START")
             elif event.key == pygame.K_LSHIFT:
-                self.change_action("DASH")
+                self.set_state("DASH")
                 
             # Attacks
             elif event.key == pygame.K_v:
-                self.change_action("ATTACK 1")
+                self.set_state("ATTACK 1")
     
+    def update(self, delta_time=1/60):
+        # Update current sprite sheet for action.
+        self._current_spritesheet = self._sprites[self._current_state]
+        self.update_animation(delta_time)
+        self._current_frame = self.get_current_frame()
+    
+    def draw(self, surface):
+        surface.blit(self._current_frame, (self.x, self.y))
+        
     def load_sprites(self):
         actions = ["AIR ATTACK", "ATTACK 1", "ATTACK 2", "ATTACK 3", "CLIMBING", "DASH", "DEATH",
                    "DEFEND", "HEALING NO EFFECT", "HEALING", "HURT", "IDLE", "JUMP FALL", "JUMP START",
@@ -105,12 +114,6 @@ class Player:
             sprites[action] = pygame.image.load(path).convert_alpha()
         return sprites
     
-    def update(self, delta_time=1/60):
-        # Update current sprite sheet for action.
-        self._current_spritesheet = self._sprites[self._current_action]
-        self.update_animation(delta_time)
-        self._current_frame = self.get_current_frame()
-    
     def get_current_frame(self):
         # Rectangle for cutting out frame
         frame_rect = pygame.Rect(self._frame_index * self._frame_width, 0, self._frame_width, self._frame_height)
@@ -121,10 +124,6 @@ class Player:
             frame = pygame.transform.flip(frame, True, False)
         
         return frame
-        
-    
-    def draw(self, surface):
-        surface.blit(self._current_frame, (self.x, self.y))
         
     def update_animation(self, delta_time):
         # Calculate number of frames in sheet
@@ -143,6 +142,6 @@ class Player:
             if self._frame_index >= num_frames:
                 self._frame_index = 0
                 
-    def change_action(self, action: str) -> None:
+    def set_state(self, action: str) -> None:
         self._frame_index = 0
-        self._current_action = action
+        self._current_state = action
