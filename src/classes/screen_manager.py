@@ -24,7 +24,14 @@ class ScreenManager:
         if isinstance(self._current_screen, MainMenuScreen):
             result = self._current_screen.handle_event(event)
             if result == "Start": # Start Game Button
+                self._game_manager.create_new_player()
                 self._current_screen = PlayScreen(self.screen, self._game_manager.player)
+        
+        # Play screen handling
+        if isinstance(self._current_screen, PlayScreen):
+            result = self._current_screen.handle_event(event)
+            if result == "Pause":
+                pass # TODO: Implement pause screen
                 
     
     def draw(self) -> None:
